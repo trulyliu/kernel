@@ -124,6 +124,7 @@ static void rockchip_rgb_encoder_enable(struct drm_encoder *encoder)
 
 	if (rgb->funcs && rgb->funcs->enable)
 		rgb->funcs->enable(rgb);
+<<<<<<< HEAD
 
 	if (rgb->phy) {
 		ret = phy_set_mode(rgb->phy, PHY_MODE_VIDEO_TTL);
@@ -134,6 +135,8 @@ static void rockchip_rgb_encoder_enable(struct drm_encoder *encoder)
 
 		phy_power_on(rgb->phy);
 	}
+=======
+>>>>>>> drm/rockchip: rgb: Remove duplicated code
 
 	if (rgb->panel) {
 		drm_panel_prepare(rgb->panel);
@@ -150,9 +153,12 @@ static void rockchip_rgb_encoder_disable(struct drm_encoder *encoder)
 		drm_panel_unprepare(rgb->panel);
 	}
 
+<<<<<<< HEAD
 	if (rgb->phy)
 		phy_power_off(rgb->phy);
 
+=======
+>>>>>>> drm/rockchip: rgb: Remove duplicated code
 	if (rgb->funcs && rgb->funcs->disable)
 		rgb->funcs->disable(rgb);
 
@@ -187,11 +193,7 @@ rockchip_rgb_encoder_atomic_check(struct drm_encoder *encoder,
 		break;
 	}
 
-<<<<<<< HEAD
 	s->output_type = DRM_MODE_CONNECTOR_DPI;
-=======
-	s->output_type = DRM_MODE_CONNECTOR_LVDS;
->>>>>>> drm/rockchip: rgb: add support output_mode config
 
 	return 0;
 }
@@ -214,7 +216,6 @@ static int rockchip_rgb_bind(struct device *dev, struct device *master,
 	struct drm_device *drm_dev = data;
 	struct drm_encoder *encoder = &rgb->encoder;
 	struct drm_connector *connector;
-<<<<<<< HEAD
 	int ret;
 
 	ret = drm_of_find_panel_or_bridge(dev->of_node, 1, -1,
@@ -222,7 +223,6 @@ static int rockchip_rgb_bind(struct device *dev, struct device *master,
 	if (ret) {
 		DRM_DEV_ERROR(dev, "failed to find panel or bridge: %d\n", ret);
 		return ret;
-=======
 	struct device_node *remote = NULL;
 	struct device_node  *port, *endpoint;
 	u32 endpoint_id;
@@ -253,6 +253,8 @@ static int rockchip_rgb_bind(struct device *dev, struct device *master,
 		ret = -EPROBE_DEFER;
 		goto err_put_port;
 >>>>>>> drm/rockchip: rgb: add support output_mode config
+=======
+>>>>>>> drm/rockchip: rgb: Remove duplicated code
 	}
 
 	encoder->port = dev->of_node;
@@ -422,6 +424,20 @@ static void rk3288_rgb_disable(struct rockchip_rgb *rgb)
 static const struct rockchip_rgb_funcs rk3288_rgb_funcs = {
 	.enable = rk3288_rgb_enable,
 	.disable = rk3288_rgb_disable,
+	regmap_write(rgb->grf, PX30_GRF_PD_VO_CON1, PX30_RGB_VOP_SEL(pipe));
+	regmap_write(rgb->grf, PX30_GRF_PD_VO_CON1,
+		     PX30_RGB_DATA_SYNC_BYPASS(1));
+}
+
+static void px30_rgb_disable(struct rockchip_rgb *rgb)
+{
+	regmap_write(rgb->grf, PX30_GRF_PD_VO_CON1,
+		     PX30_RGB_DATA_SYNC_BYPASS(0));
+}
+
+static const struct rockchip_rgb_funcs px30_rgb_funcs = {
+	.enable = px30_rgb_enable,
+	.disable = px30_rgb_disable,
 };
 
 static const struct of_device_id rockchip_rgb_dt_ids[] = {
@@ -432,6 +448,8 @@ static const struct of_device_id rockchip_rgb_dt_ids[] = {
 	{ .compatible = "rockchip,rk3288-rgb", .data = &rk3288_rgb_funcs },
 	{ .compatible = "rockchip,rk3308-rgb", },
 	{ .compatible = "rockchip,rk3368-rgb", },
+	{ .compatible = "rockchip,rk3066-rgb", },
+	{ .compatible = "rockchip,rk3308-rgb", },
 	{ .compatible = "rockchip,rv1108-rgb", },
 	{}
 };
