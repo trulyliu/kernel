@@ -187,7 +187,11 @@ rockchip_rgb_encoder_atomic_check(struct drm_encoder *encoder,
 		break;
 	}
 
+<<<<<<< HEAD
 	s->output_type = DRM_MODE_CONNECTOR_DPI;
+=======
+	s->output_type = DRM_MODE_CONNECTOR_LVDS;
+>>>>>>> drm/rockchip: rgb: add support output_mode config
 
 	return 0;
 }
@@ -210,6 +214,7 @@ static int rockchip_rgb_bind(struct device *dev, struct device *master,
 	struct drm_device *drm_dev = data;
 	struct drm_encoder *encoder = &rgb->encoder;
 	struct drm_connector *connector;
+<<<<<<< HEAD
 	int ret;
 
 	ret = drm_of_find_panel_or_bridge(dev->of_node, 1, -1,
@@ -217,6 +222,37 @@ static int rockchip_rgb_bind(struct device *dev, struct device *master,
 	if (ret) {
 		DRM_DEV_ERROR(dev, "failed to find panel or bridge: %d\n", ret);
 		return ret;
+=======
+	struct device_node *remote = NULL;
+	struct device_node  *port, *endpoint;
+	u32 endpoint_id;
+	int ret = 0, child_count = 0;
+
+	rgb->drm_dev = drm_dev;
+	port = of_graph_get_port_by_id(dev->of_node, 1);
+	if (!port) {
+		DRM_DEV_ERROR(dev,
+			      "can't found port point, please init rgb panel port!\n");
+		return -EINVAL;
+	}
+	for_each_child_of_node(port, endpoint) {
+		child_count++;
+		if (of_property_read_u32(endpoint, "reg", &endpoint_id))
+			endpoint_id = 0;
+		ret = drm_of_find_panel_or_bridge(dev->of_node, 1, endpoint_id,
+						  &rgb->panel, &rgb->bridge);
+		if (!ret)
+			break;
+	}
+	if (!child_count) {
+		DRM_DEV_ERROR(dev, "rgb port does not have any children\n");
+		ret = -EINVAL;
+		goto err_put_port;
+	} else if (ret) {
+		DRM_DEV_ERROR(dev, "failed to find panel and bridge node\n");
+		ret = -EPROBE_DEFER;
+		goto err_put_port;
+>>>>>>> drm/rockchip: rgb: add support output_mode config
 	}
 
 	encoder->port = dev->of_node;

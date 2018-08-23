@@ -25,12 +25,38 @@ The rgb has two video ports described by:
 Their connections are modeled using the OF graph bindings specified in
 	Documentation/devicetree/bindings/graph.txt.
 
+<<<<<<< HEAD
 - video port 0 for the VOP input
 - video port 1 for either a panel or bridge
 
 Example:
 
 &grf {
+=======
+- video port 0 for the VOP input, the remote endpoint maybe vopb/vopl/vop
+- video port 1 for either a panel or subsequent encoder
+
+the panel described by:
+	Documentation/devicetree/bindings/display/panel/simple-panel.txt
+Panel other required properties:
+- ports for remote rgb output.
+
+Example:
+
+panel: panel {
+	compatible = "auo,b101ean01";
+	enable-gpios = <&gpio7 21 GPIO_ACTIVE_HIGH>;
+	bus-format = <MEDIA_BUS_FMT_RGB888_1X24>;
+
+	ports {
+		panel_in_rgb: endpoint {
+			remote-endpoint = <&rgb_out_panel>;
+		};
+	};
+};
+
+For Rockchip RV1108:
+
 	rgb: rgb {
 		compatible = "rockchip,rk3288-rgb";
 		pinctrl-names = "default", "sleep";
