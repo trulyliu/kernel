@@ -1383,15 +1383,10 @@ static void dw_mipi_dsi_encoder_enable(struct drm_encoder *encoder)
 	struct dw_mipi_dsi *dsi = encoder_to_dsi(encoder);
 	unsigned long lane_rate = dw_mipi_dsi_get_lane_rate(dsi);
 
-<<<<<<< HEAD
 	if (dsi->dphy.phy)
 		dw_mipi_dsi_set_hs_clk(dsi, lane_rate);
 	else
 		dw_mipi_dsi_set_pll(dsi, lane_rate);
-=======
-	dw_mipi_dsi_vop_routing(dsi);
-	dw_mipi_dsi_pre_init(dsi);
->>>>>>> add lcd tc358762 driver
 
 	dev_info(dsi->dev, "final DSI-Link bandwidth: %u x %d Mbps\n",
 		 dsi->lane_mbps, dsi->slave ? dsi->lanes * 2 : dsi->lanes);
