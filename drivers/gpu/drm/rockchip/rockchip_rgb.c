@@ -246,9 +246,6 @@ static int rockchip_rgb_bind(struct device *dev, struct device *master,
 		DRM_DEV_ERROR(dev, "failed to find panel and bridge node\n");
 		ret = -EPROBE_DEFER;
 		goto err_put_port;
->>>>>>> drm/rockchip: rgb: add support output_mode config
-=======
->>>>>>> drm/rockchip: rgb: Remove duplicated code
 	}
 
 	encoder->port = dev->of_node;
