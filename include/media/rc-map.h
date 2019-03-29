@@ -12,6 +12,51 @@
 #include <linux/input.h>
 #include <uapi/linux/lirc.h>
 
+
+enum rc_type {
+        RC_TYPE_UNKNOWN         = 0,    /* Protocol not known */
+        RC_TYPE_OTHER           = 1,    /* Protocol known but proprietary */
+        RC_TYPE_RC5             = 2,    /* Philips RC5 protocol */
+        RC_TYPE_RC5X            = 3,    /* Philips RC5x protocol */
+        RC_TYPE_RC5_SZ          = 4,    /* StreamZap variant of RC5 */
+        RC_TYPE_JVC             = 5,    /* JVC protocol */
+        RC_TYPE_SONY12          = 6,    /* Sony 12 bit protocol */
+        RC_TYPE_SONY15          = 7,    /* Sony 15 bit protocol */
+        RC_TYPE_SONY20          = 8,    /* Sony 20 bit protocol */
+        RC_TYPE_NEC             = 9,    /* NEC protocol */
+        RC_TYPE_SANYO           = 10,   /* Sanyo protocol */
+        RC_TYPE_MCE_KBD         = 11,   /* RC6-ish MCE keyboard/mouse */
+        RC_TYPE_RC6_0           = 12,   /* Philips RC6-0-16 protocol */
+        RC_TYPE_RC6_6A_20       = 13,   /* Philips RC6-6A-20 protocol */
+        RC_TYPE_RC6_6A_24       = 14,   /* Philips RC6-6A-24 protocol */
+        RC_TYPE_RC6_6A_32       = 15,   /* Philips RC6-6A-32 protocol */
+        RC_TYPE_RC6_MCE         = 16,   /* MCE (Philips RC6-6A-32 subtype) protocol */
+        RC_TYPE_SHARP           = 17,   /* Sharp protocol */
+        RC_TYPE_XMP             = 18,   /* XMP protocol */
+};
+
+#define RC_BIT_NONE             0
+#define RC_BIT_UNKNOWN          (1 << RC_TYPE_UNKNOWN)
+#define RC_BIT_OTHER            (1 << RC_TYPE_OTHER)
+#define RC_BIT_RC5              (1 << RC_TYPE_RC5)
+#define RC_BIT_RC5X             (1 << RC_TYPE_RC5X)
+#define RC_BIT_RC5_SZ           (1 << RC_TYPE_RC5_SZ)
+#define RC_BIT_JVC              (1 << RC_TYPE_JVC)
+#define RC_BIT_SONY12           (1 << RC_TYPE_SONY12)
+#define RC_BIT_SONY15           (1 << RC_TYPE_SONY15)
+#define RC_BIT_SONY20           (1 << RC_TYPE_SONY20)
+#define RC_BIT_NEC              (1 << RC_TYPE_NEC)
+#define RC_BIT_SANYO            (1 << RC_TYPE_SANYO)
+#define RC_BIT_MCE_KBD          (1 << RC_TYPE_MCE_KBD)
+#define RC_BIT_RC6_0            (1 << RC_TYPE_RC6_0)
+#define RC_BIT_RC6_6A_20        (1 << RC_TYPE_RC6_6A_20)
+#define RC_BIT_RC6_6A_24        (1 << RC_TYPE_RC6_6A_24)
+#define RC_BIT_RC6_6A_32        (1 << RC_TYPE_RC6_6A_32)
+#define RC_BIT_RC6_MCE          (1 << RC_TYPE_RC6_MCE)
+#define RC_BIT_SHARP            (1 << RC_TYPE_SHARP)
+#define RC_BIT_XMP              (1 << RC_TYPE_XMP)
+
+
 #define RC_PROTO_BIT_NONE		0ULL
 #define RC_PROTO_BIT_UNKNOWN		BIT_ULL(RC_PROTO_UNKNOWN)
 #define RC_PROTO_BIT_OTHER		BIT_ULL(RC_PROTO_OTHER)
