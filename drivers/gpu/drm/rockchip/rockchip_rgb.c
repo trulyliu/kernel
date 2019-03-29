@@ -124,7 +124,6 @@ static void rockchip_rgb_encoder_enable(struct drm_encoder *encoder)
 
 	if (rgb->funcs && rgb->funcs->enable)
 		rgb->funcs->enable(rgb);
-<<<<<<< HEAD
 
 	if (rgb->phy) {
 		ret = phy_set_mode(rgb->phy, PHY_MODE_VIDEO_TTL);
@@ -135,8 +134,6 @@ static void rockchip_rgb_encoder_enable(struct drm_encoder *encoder)
 
 		phy_power_on(rgb->phy);
 	}
-=======
->>>>>>> drm/rockchip: rgb: Remove duplicated code
 
 	if (rgb->panel) {
 		drm_panel_prepare(rgb->panel);
@@ -153,12 +150,9 @@ static void rockchip_rgb_encoder_disable(struct drm_encoder *encoder)
 		drm_panel_unprepare(rgb->panel);
 	}
 
-<<<<<<< HEAD
 	if (rgb->phy)
 		phy_power_off(rgb->phy);
 
-=======
->>>>>>> drm/rockchip: rgb: Remove duplicated code
 	if (rgb->funcs && rgb->funcs->disable)
 		rgb->funcs->disable(rgb);
 
